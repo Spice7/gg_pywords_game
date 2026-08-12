@@ -70,12 +70,19 @@ def scorePrint(correctAnswer, time):
 # 게임 결과 저장
 def saveResult(correctAnswer, time):
     lineCount = 0   # 몇 줄 작성되어 있는지
-
-    with open("word_game_score.csv", "r", encoding='utf-8') as file:
-        lineCount = sum(1 for _ in file)        
-
-    with open("word_game_score.csv", "a", encoding='utf-8') as file:
-        file.write(f"[{lineCount + 1}] 게임시간: {time:.2f}초, 맞춘 개수: {correctAnswer}개\n")
+        
+    try:
+        with open("output/word_game_score.csv", "r", encoding='utf-8') as file:
+            lineCount = sum(1 for _ in file)  
+    # 파일이 없으면 만들고
+    except FileNotFoundError:
+        with open("output/word_game_score.csv", "w", encoding='utf-8') as file:
+            file.write(f"[{lineCount + 1}] 게임시간: {time:.2f}초, 맞춘 개수: {correctAnswer}개\n")  
+        
+    # 파일이 있으면 append
+    else:
+        with open("output/word_game_score.csv", "a", encoding='utf-8') as file:
+            file.write(f"[{lineCount + 1}] 게임시간: {time:.2f}초, 맞춘 개수: {correctAnswer}개\n")
 
 
 wordLoad(words)
